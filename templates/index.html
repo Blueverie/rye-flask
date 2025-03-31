@@ -4,14 +4,49 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Rye</title>
-	
+    <title>Image Upload Manager</title>
 	<link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Inconsolata&amp;display=swap" />
 </head>
-
 <body>
-	<center>218</center>
-</body>
+    <h1>Upload Images</h1>
+    <form id="uploadForm">
+        <input type="file" id="imageInput" multiple accept="image/*">
+        <div id="preview"></div>
+        <button type="submit">Upload</button>
+    </form>
 
+    <script>
+        const imageInput = document.getElementById("imageInput");
+        const preview = document.getElementById("preview");
+        const uploadForm = document.getElementById("uploadForm");
+
+        // Display image previews
+        imageInput.addEventListener("change", () => {
+            preview.innerHTML = ""; // Clear existing previews
+            Array.from(imageInput.files).forEach(file => {
+                const img = document.createElement("img");
+                img.src = URL.createObjectURL(file);
+                img.style.width = "150px";
+                img.style.margin = "10px";
+                preview.appendChild(img);
+            });
+        });
+
+        // Handle form submission
+        uploadForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            Array.from(imageInput.files).forEach(file => formData.append("images", file));
+
+            const response = await fetch('/upload', {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+            alert("Uploaded Image URLs: " + result.image_urls.join(", "));
+        });
+    </script>
+</body>
 </html>
