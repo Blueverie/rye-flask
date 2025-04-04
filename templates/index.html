@@ -55,7 +55,8 @@
 			});
 		</script>
 		<script>
-			document.addEventListener('keydown', (event) => {
+			const inputField = document.getElementById('dvorakCheckerInput');
+			inputField.addEventListener('keydown', (event) => {
   const qwertyKeyForKeyCode = {
 	KeyA: 'A',
 	KeyB: 'B',
